@@ -43,10 +43,15 @@ class RoutingSession(SignallingSession):
 
     def get_bind(self, mapper=None, clause=None):
         if self.use_follower:
-            if 'schedule_a' in request.path:
-                print("Choose replica 1")
-            else:
-                print("Choose replica 2")
+            # TODO: Toggle to turn this on/off?
+            if len(self.followers) > 1:
+                if 'schedule_a' in request.path:
+                    print("Schedule A in request path, using follower 1")
+                    return self.followers[0]
+                else:
+                    print("Schedule A not in request path, choosing another follower")
+                    return random.choice(self.followers[1:])
+
             return random.choice(self.followers)
 
         return super().get_bind(mapper=mapper, clause=clause)
