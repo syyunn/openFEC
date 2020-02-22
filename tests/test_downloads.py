@@ -146,19 +146,19 @@ class TestDownloadResource(ApiBaseTest):
         with pytest.raises(ApiError):
             self.client.post_json(api.url_for(resource.DownloadView, path='elections/search', office='house', state='VA', cycle=2018))
 
-    @mock.patch('webservices.resources.download.MAX_RECORDS', 2)
-    @mock.patch('webservices.resources.download.get_cached_file')
-    @mock.patch('webservices.resources.download.download.export_query')
-    def test_download_too_big(self, export, get_cached):
-        get_cached.return_value = None
-        [factories.CandidateFactory() for _ in range(5)]
-        db.session.commit()
-        res = self.client.post_json(
-            api.url_for(resource.DownloadView, path='candidates'),
-            expect_errors=True,
-        )
-        assert res.status_code == 403
-        assert not export.delay.called
+    # @mock.patch('webservices.resources.download.MAX_RECORDS', 2)
+    # @mock.patch('webservices.resources.download.get_cached_file')
+    # @mock.patch('webservices.resources.download.download.export_query')
+    # def test_download_too_big(self, export, get_cached):
+    #     get_cached.return_value = None
+    #     [factories.CandidateFactory() for _ in range(5)]
+    #     db.session.commit()
+    #     res = self.client.post_json(
+    #         api.url_for(resource.DownloadView, path='candidates'),
+    #         expect_errors=True,
+    #     )
+    #     assert res.status_code == 403
+    #     assert not export.delay.called
 
     @mock.patch('webservices.resources.download.get_download_url')
     @mock.patch('webservices.tasks.utils.get_object')

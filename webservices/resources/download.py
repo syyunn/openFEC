@@ -16,7 +16,7 @@ from webservices.utils import use_kwargs_original
 
 client = boto3.client('s3')
 
-MAX_RECORDS = 500000
+#MAX_RECORDS = 500000
 URL_EXPIRY = 7 * 24 * 60 * 60
 
 class DownloadView(utils.Resource):
@@ -33,11 +33,11 @@ class DownloadView(utils.Resource):
                 'url': cached_file,
             }
         resource = download.call_resource(path, request.query_string)
-        if resource['count'] > MAX_RECORDS:
-            raise exceptions.ApiError(
-                'Cannot request downloads with more than {} records'.format(MAX_RECORDS),
-                status_code=http.client.FORBIDDEN,
-            )
+        # if resource['count'] > MAX_RECORDS:
+        #     raise exceptions.ApiError(
+        #         'Cannot request downloads with more than {} records'.format(MAX_RECORDS),
+        #         status_code=http.client.FORBIDDEN,
+        #     )
         download.export_query.delay(
             path,
             base64.b64encode(request.query_string).decode('UTF-8')
