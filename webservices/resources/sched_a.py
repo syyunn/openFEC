@@ -78,6 +78,7 @@ class ScheduleAView(ItemizedResource):
         'contribution_receipt_amount',
         'contributor_aggregate_ytd',
     ]
+    use_pk_for_count=True
 
     @property
     def args(self):
